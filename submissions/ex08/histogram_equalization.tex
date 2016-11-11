@@ -21,7 +21,7 @@ Today's exercise is focused on the implementation of a histogram equalization.
 \noindent
 Sometimes, we acquire an image, which distribution of brightness values is quite narrow
 (see example image in Fig. \ref{fig:histogram_app}).
-In such image, it is hard to see details due to low contranst.
+In such image, it is hard to see details due to low contrast.
 There are many techniques to achieve better contrast. In this exercise, we will cover
 a simple technique.
 \newline
@@ -33,11 +33,15 @@ brightness levels in the image. In our case, it is 256. A histogram value
 for a value $i$ is %denoted by $n_i$.
 
 \begin{equation} \label{eq:histogram}
-    p(i) = n_i \, .
+    p(i) = n_i \,
 \end{equation}
 
 \noindent
-Second, we need to know the cumulative distribution function that corresponds to $p$
+where $n_i$ is the number of pixels with brightness value equal to $i$.
+\newline
+\newline
+\noindent
+Second, we can calculate the cumulative distribution function that corresponds to $p$
 
 \begin{equation} \label{eq:cdf}
     cdf(i) = \sum\limits_{j=0}^{i} n_j \, .
@@ -54,7 +58,7 @@ is the the new brightness value.
 \newline
 \noindent
 To speed up the process, you can construct a simple look-up table (LUT) of $L$ entries. You compute all the new values
-in LUT and then simply go though the image brightness values and pick up the values from LUT and store them in a new image.
+in LUT and then simply go through the image brightness values and pick up the values from LUT and store them in a new image.
 
 \newpage
 \section*{Expected Output}

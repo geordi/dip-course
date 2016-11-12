@@ -1,0 +1,123 @@
+\documentclass[12pt]{article}
+
+\usepackage{a4wide}
+\usepackage[utf8]{inputenc}
+
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{placeins}
+
+\pagestyle{empty}
+
+%\parindent=0pt
+
+\def\mvec#1{\mathbf{#1}}
+
+\begin{document}
+
+\section*{Perspective Transform}
+
+In this exercise, we'll implement a perspective tranform to place one image into another one.
+The result is shown in Fig. \ref{fig:result}
+
+A perpective transform is defined by the following equation
+
+\begin{equation}
+    \label{eq:proj}
+    \begin{bmatrix}
+        \phi(x, y) \\
+        \psi(x, y) \\
+        \omega(x, y)
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        p_{11} & p_{12} & p_{13} \\
+        p_{21} & p_{22} & p_{23} \\
+        p_{31} & p_{32} & p_{33}
+    \end{bmatrix}
+    \begin{bmatrix}
+        x \\
+        y \\
+        1
+    \end{bmatrix}
+    \, ,
+\end{equation}
+where homogenous coordinates after transform are $\phi(x, y)$, $\psi(x, y)$, and $\omega(x, y)$.
+The corresponding affine coordinates are then $\phi(x, y) / \omega(x, y)$ and $\psi(x, y) / \omega(x, y)$.
+
+\begin{figure}[th]
+    \begin{center}
+        \includegraphics[scale=1.0]{img_6_7}
+    \end{center}
+    \caption{Projective transform of image.}
+    \label{img:6_7}
+\end{figure}
+
+Lets consider a projective transform descibed so that for four points $\tilde{A}_{1} ,\tilde{A}_{2} ,\tilde{A}_{3} ,\tilde{A}_{4}$
+in an input image there are corresponding four points $A_{1} ,A_{2}, A_{3}, A_{4}$ defined in an output image
+(in Fig. \ref{img:6_7} points $\tilde{A}_{1}, \tilde{A}_{2}, \tilde{A}_{3}, \tilde{A}_{4}$ are chosen as corner points).
+Lets illustrate the algorithm to derive the transform matrix from Eq. \eqref{eq:proj}.
+Coordinates of point $\tilde{A}_{i}$ in the input image will be denoted as $\tilde{x}_{i}, \tilde{y}_{i}$.
+Location of a corresponding point $A_i$ in the output image is described using $x_i$, $y_i$ coordinates.
+Further, lets denote $\mathbf{p}_1 = (p_{11}, p_{12}, p_{13})^\top, \mathbf{p}_2 = (p_{21}, p_{22}, p_{23})^\top, \mathbf{p}_3 = (p_{31}, p_{32}, p_{33})^\top, \mathbf{x}_i = (x_i, y_i, 1)^\top$.
+Based on the Eq. \eqref{eq:proj} for each of the input points we obtain 
+
+\begin{equation}
+    \label{eq:tri}
+\left[\begin{array}{c} {\tilde{w}_{i} \tilde{x}_{i} } \\ {\tilde{w}_{i} \tilde{y}_{i} } \\ {\tilde{w}_{i} } \end{array}\right]=\left[\begin{array}{c} {\mvec{p}_{1}^\top} \\ {\mvec{p}_{2}^\top} \\ {\mvec{p}_{3}^\top} \end{array}\right]\mvec{x}_{i} \, .
+\end{equation}
+From the third equation in the formula (Eq. (\ref{eq:tri}) we get $\tilde{w}_{i} = \mathbf{p}_3^\top \mathbf{x}_{i}$.
+By substituting it into the first and second equation, we obtain
+
+\begin{equation}
+    \label{eq:our_proj}
+    \left[
+    \begin{array}{ccc}
+    \mathbf{x}_i^\top & \mathbf{0} & -\tilde{x}_i \mathbf{x}_i^\top \\
+    \mathbf{0} & \mathbf{x}_i^\top & -\tilde{y}_i \mathbf{x}_i^\top
+    \end{array}
+    \right]
+    \left[
+    \begin{array}{c}
+    \mathbf{p}_1 \\
+    \mathbf{p}_2 \\
+    \mathbf{p}_3
+    \end{array}
+    \right]
+    =
+    \left[
+    \begin{array}{c}
+    0 \\ 0
+    \end{array}
+    \right].
+\end{equation}
+
+A complete version of Eq. \ref{eq:our_proj} looks as the following equation
+
+\begin{equation}
+    \label{eq:line_extended}
+    \begin{bmatrix}
+        x_i & y_i & 1 & 0   & 0   & 0 & -\tilde{x}_i x_i & -\tilde{x}_i y_i & -\tilde{x}_i \\
+        0   & 0   & 0 & x_i & y_i & 1 & -\tilde{y}_i x_i & -\tilde{y}_i y_i & -\tilde{y}_i
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+        0 \\
+        0
+    \end{bmatrix}
+    \, .
+\end{equation}
+
+
+\FloatBarrier
+\section*{Expected Output}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{persp_proj.png}
+    \label{fig:result}
+    \caption{Input image (\textit{top left} and \textit{bottom} images); output image (\textit{top right} image).}
+\end{figure}
+
+\end{document}
+

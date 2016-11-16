@@ -1,0 +1,42 @@
+\documentclass[12pt]{article}
+
+\usepackage{a4wide}
+\usepackage[utf8]{inputenc}
+
+\usepackage{graphicx}
+
+%\pagestyle{empty}
+
+\parindent=0pt
+
+\begin{document}
+
+\section*{Inverse Discrete Fourier Transform}
+
+In the previous lesson, we've implemented the Discrete Fourier Transform. Today, we'll implement its inverse called the Inverse Discrete Fourier Transform (IDFT).
+
+We want to transform the frequency spectrum $F$ back to its spatial domain $f$, which is an image.
+The computation of the IDFT can be easily implemented using following formula
+
+\begin{equation}
+    f(m, n) = \sum\limits_{k=0}^{M-1} \sum\limits_{l=0}^{N-1} F(k, l) \varphi_{k, l}(m, n)\,.
+\end{equation}
+
+The basis $\varphi_{k, l}$ is defined as
+
+\begin{equation}
+    \varphi_{k, l}(m, n) = \frac{1}{\sqrt{MN}} e^{i 2 \pi \left( \frac{mk}{M} + \frac{nl}{N} \right) }, k = 0, 1, \dots, M-1 \,\, \mathrm{a} \,\, l = 0, 1, \dots, N-1\,.
+\end{equation}
+Notice that argument of $e$ is positive, so it's different from the basis used in DFT.
+\\
+\\
+To compute the basis, it's advantageous to use Eulers formula $e^{ix} = \cos( x ) + i \sin( x )$.
+\\
+\\
+Don't forget that elements in the matrix $F$ are complex, so is the basis. Think for a while, what will be the result.
+\\
+\\
+\textbf{Hint:} Use \texttt{double} data type as last time.
+
+\end{document}
+

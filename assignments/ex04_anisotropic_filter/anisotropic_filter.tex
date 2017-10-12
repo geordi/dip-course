@@ -54,14 +54,18 @@ and $\nabla_N I_{i,j} = I_{i-1,j} - I_{i,j}$. For other directions, it works the
 \noindent
 In each iteration step, a new value in a pixel is computed using the following formula
 
+\begin{equation} \label{eq:iter}
+    I_{i,j}^{t+1} = I_{i,j}^{t} \left( 1 - \lambda \left( c_N + c_S + c_E + c_W \right)_{i,j}^{t}\right) + \lambda \left( c_N \cdot I_N + c_S I_S + c_E I_E + c_W I_W \right)_{i,j}^{t} \, ,
+\end{equation}
+
 %\begin{eqnarray} \label{eq:iter}
 %    I_{i,j}^{t+1} &=& I_{i,j}^{t} + \lambda \left[ c_N \cdot \nabla_N I + c_S \cdot \nabla_S I + c_E \cdot \nabla_E I + c_W \cdot \nabla_W I \right]_{i,j}^{t} \nonumber \\
 %    &=& I_{i,j}^{t} \left( 1 - \lambda \left( c_N + c_S + c_E + c_W \right)_{i,j}^{t}\right) + \lambda \left( c_N \cdot I_N + c_S I_S + c_E I_E + c_W I_W \right)_{i,j}^{t} \, ,
 %\end{eqnarray}
 
-\begin{equation} \label{eq:iter}
-    I_{i,j}^{t+1} = I_{i,j}^{t} + \lambda \left[ c_N \cdot \nabla_N I + c_S \cdot \nabla_S I + c_E \cdot \nabla_E I + c_W \cdot \nabla_W I \right]_{i,j}^{t} \, ,
-\end{equation}
+%\begin{equation} \label{eq:iter}
+%    I_{i,j}^{t+1} = I_{i,j}^{t} + \lambda \left[ c_N \cdot \nabla_N I + c_S \cdot \nabla_S I + c_E \cdot \nabla_E I + c_W \cdot \nabla_W I \right]_{i,j}^{t} \, ,
+%\end{equation}
 where $I_{i,j}^{t+1}$ is a new brightness value at coordinate $i,j$ at time $t+1$ and $I_{i,j}^t$ is an old brightness
 value at coordinate $i,j$ at time $t$. Using the Eq. (\ref{eq:iter}) in each pixel, we compute new values at time $t+1$
 based on the values at time $t$. Do not forget that this is not an in-place operation. You have to compute new values

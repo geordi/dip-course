@@ -15,63 +15,69 @@
 
 Today's exercise is focused on implementation of simple filters using results of the Discrete Fourier Transform (DFT).
 
-First of all
-\noindent
-The Fourier Transform computes frequency spectrum of the given input image $f$.
-This spectrum is denoted as $F$ (it's a complex matrix with dimensions of the input image).
+Often the input image is a noise load. This occurs in high frequencies in the frequency domain.
+One of the goals of the exercise is to create a filter that removes noise from the input image.
+Another task is removing regular vertical bars in the image.
 
-\begin{equation}
-    F(k, l) = \sum\limits_{m=0}^{M-1} \sum\limits_{n=0}^{N-1} f(m, n) \varphi_{k, l}(m, n)\,.
-\end{equation}
+\subsection*{Noise Removal}
 
-\noindent
-The basis $\varphi_{k, l}$ is defined as
+As mentioned above, noise is reflected in high frequencies in the frequency domain.
+From the previous exercise, we have already created an image transform to a frequency domain (DFT) and a reverse conversion to a spatial domain (IDFT).
+We now introduce filters into this pipeline.
+In the frequency domain, we can apply the following types of filters: low pass, high pass and band pass.
+Use low pass filter to remove noise.
+Recall that there are low frequencies after DFT runs in the corners of the complex matrix and the high frequencies in the center.
+In order to our filter to work well, we need to swap 1st with the 3rd quadrant and 2nd with the 4th quadrant (schematically depicted in Fig. \ref{fig:quadrants}).
 
-\begin{equation}
-    \varphi_{k, l}(m, n) = \frac{1}{\sqrt{MN}} e^{-i 2 \pi \left( \frac{mk}{M} + \frac{nl}{N} \right) }, k = 0, 1, \dots, M-1 \,\, \mathrm{a} \,\, l = 0, 1, \dots, N-1\,.
-\end{equation}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.25\textwidth]{images/quadrants.png}
+\caption{Quadrants swap.}
+\label{fig:quadrants}
+\end{figure}
 
-\noindent
-To compute the basis, it's advantageous to use Eulers formula $e^{ix} = \cos( x ) + i \sin( x )$.
-Thanks to this equation, the solution is split into real and imaginary parts. More precisely:
+Then, you create a mask that has the white color in the circle and the black outside (Fig.~\ref{fig:mask}).
 
-\begin{equation}
-    F(k, l) = R(k, l) + I(k, l)\, .
-\end{equation}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.25\textwidth]{images/mask.png}
+\caption{High pass mask.}
+\label{fig:mask}
+\end{figure}
 
-\noindent
-The spectrum amplituda $|F(k, l)|$ is computed as follows
+The diameter of the circle will depend on filtration rate (try to elabotate on this).
+To remove high frequencies, go through the mask's pixels and set the complex matrix to the value of 0 outside the white circle.
+Do the reverse for the high pass filter.
+After setting the values, you must swap the quadrants to the original positions.
+Result of the low pass filter is shown in Fig. \ref{fig:low_high}.
 
-\begin{equation}
-    |F(k, l)| = \sqrt{ R^2(k, l) + I^2(k, l)}\, .
-\end{equation}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{images/lena_low_high.png}
+\caption{Input image (\textit{left}); filtered with low pass (\textit{middle}); filtered with high pass (\textit{right}).}
+\label{fig:low_high}
+\end{figure}
 
-\noindent
-The phase $\Phi(k, l)$ is defined as follows
 
-\begin{equation}
-    \Phi(k, l) = \mathrm{arctg}\left( \frac{I(k, l)}{R(k, l)} \right)\, .
-\end{equation}
+\subsection*{Removing regular vertical lines}
 
-\noindent
-The power spectrum $P(k, l)$ may be computed easily as $ P(k, l) = |F(k, l)|^2$.
+Now, the situation is somewhat more complex.
+Try to figure out the frequencies of those vertical lines in the input image.
+Images of the frequecy spectra placed at the exercise's website may guide you to complete this task.
+Setting the right parts the complex matrix to 0 can achieve the effect shown in Fig. \ref{fig:lena_bars_example}.
 
-\noindent
-You can display the power spectrum by logarithming the values of the spectrum and then normalizing values to the interval $\langle 0, 1\rangle$.
-%
-%
-%Energetické spektrum signálu je možno zobrazit tak, že jej logaritmujeme a výsledné hodnoty normalizujeme do rozsahu $\langle 0, 1\rangle$.
-\\
-\\
-\noindent
-\textbf{Hint:} Use \texttt{double} data type to represent the input image, values of the frequency spectrum, and phase.
-%{\textbf Hint:} Pracujete s datovým typem \texttt{double} pro reprezentaci vstupního obrazu, prvků frekvenčního spektra i fázového posuvu.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.6\textwidth]{images/lena_bars_example.png}
+\caption{Input image (\textit{left}); removal of vertical bars (\textit{right}).}
+\label{fig:lena_bars_example}
+\end{figure}
 
-\section*{Expected Output}
+%\section*{Expected Output}
 
-\begin{center}
-\includegraphics[width=0.8\textwidth]{resultat.png}
-\end{center}
+%\begin{center}
+%\includegraphics[width=0.8\textwidth]{resultat.png}
+%\end{center}
 
 \end{document}
 

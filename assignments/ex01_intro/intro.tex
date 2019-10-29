@@ -93,12 +93,12 @@ To open an image, we use \code{cv::imread} function that returns an image that w
 Images can be color or grayscale. Most of our algorithms will use grayscale images.
 The following code reads image in color and grayscale variant and stores them in two different variables.
 
-\begin{lstlisting}[style=CStyle,caption={Reading image.},label={lst:read_image}]
-// load color image from file system to cv::Mat variable, this will be loaded using 8 bits (uchar)
-cv::Mat src_8uc3_img = cv::imread( "images/lena.png", CV_LOAD_IMAGE_COLOR );
+\begin{lstlisting}[style=CStyle,caption={Reading an image.},label={lst:read_image}]
+// load color image from file system to cv::Mat variable, this will be loaded using 8 bits (uchar) per channel
+cv::Mat src_8uc3_img = cv::imread( "images/lena.png", cv::IMREAD_COLOR );
 
-// load color image from file system to cv::Mat variable, this will be loaded using 8 bits (uchar)
-cv::Mat src_8uc1_img = cv::imread( "images/lena.png", CV_LOAD_IMAGE_GRAYSCALE );
+// load color image from file system to cv::Mat variable, this will be loaded using 8 bits (uchar) per channel
+cv::Mat src_8uc1_img = cv::imread( "images/lena.png", cv::IMREAD_GRAYSCALE );
 \end{lstlisting}
 
 As you can see, we now have the color version of Lena (Figure \ref{img:lena} (left)) and gray scale Lena (Figure \ref{img:lena} (middle))
@@ -108,9 +108,9 @@ However, we can also convert images between different color spaces.
 We can easily convert a RGB image to grayscale one using \code{cv::cvtColor}
 function as shown in listing \ref{lst:cvtcolor}.
 
-\begin{lstlisting}[style=CStyle,caption={Reading image.},label={lst:cvtcolor}]
+\begin{lstlisting}[style=CStyle,caption={Converting a color image to a grascale one.},label={lst:cvtcolor}]
 // convert input color image to grayscale one, CV_BGR2GRAY specifies direction of conversion
-cv::cvtColor( src_8uc3_img, gray_8uc1_img, CV_BGR2GRAY );
+cv::cvtColor( src_8uc3_img, gray_8uc1_img, cv::COLOR_BGR2GRAY );
 \end{lstlisting}
 
 We just converted color image \code{src\_8uc3\_img} to empty image \code{gray\_8uc1\_img}.
@@ -123,7 +123,7 @@ Such values have to stored in real value data type. For our use, it'll be comple
 To convert a grayscale image from 8 bits (\code{uchar}) representation to 32 bits (\code{float}) representation we use \code{convertTo} method of \code{cv::Mat} variable.
 The parameters of the method are: output image, output data type, and conversion scale and the method usage is described below.
 
-\begin{lstlisting}[style=CStyle,caption={Reading image.},label={lst:convertto}]
+\begin{lstlisting}[style=CStyle,caption={Converting an image represented using \code{uchar}s to an image represented by \code{float}s.},label={lst:convertto}]
 // convert grayscale image from 8 bits to 32 bits, resulting values will be in the interval 0.0 - 1.0
 gray_8uc1_img.convertTo( gray_32fc1_img, CV_32FC1, 1.0 / 255.0 );
 \end{lstlisting}
@@ -164,7 +164,7 @@ Another important operation with image pixels is, of course, setting a new pixel
 This is done again using \code{at} method. The only difference from the read operation is that we assign
 a new value to the method. An example is shown in the listing below.
 
-\begin{lstlisting}[style=CStyle,caption={Asigning a new value to a pixel.},label={lst:pixel-assign}]
+\begin{lstlisting}[style=CStyle,caption={Assigning a new value to a pixel.},label={lst:pixel-assign}]
 // set pixel value to 0 (black)
 gray_8uc1_img.at<uchar>( y, x ) = 0;
 \end{lstlisting}
@@ -177,7 +177,7 @@ First, we crate a new image \code{gradient\_8uc1\_img} with 50 rows and 256 colu
 This means that image will use 8 bits as data representation (\tuchar{}) and one channel, so it's essentially
 a grayscale image. Then we iterate over all pixels and assign brightness value according to the column number.
 
-\begin{lstlisting}[style=CStyle,caption={Create an image of a horizontal gradient from black color to white using grayscale.},label={lst:gradient-image}]
+\begin{lstlisting}[style=CStyle,caption={Create an image of a horizontal gradient from the black color to the white using grayscale.},label={lst:gradient-image}]
 // declare variable to hold gradient image with dimensions: width= 256 pixels, height= 50 pixels.
 // Gray levels wil be represented using 8 bits (uchar)
 cv::Mat gradient_8uc1_img( 50, 256, CV_8UC1 );
@@ -208,7 +208,7 @@ You can find the full listing of the exercise's code below.
 
 int main( int argc, char *argv[] )
 {
-    cv::Mat src_8uc3_img = cv::imread( "images/lena.png", CV_LOAD_IMAGE_COLOR ); // load color image from file system to Mat variable, this will be loaded using 8 bits (uchar)
+    cv::Mat src_8uc3_img = cv::imread( "images/lena.png", cv::IMREAD_COLOR ); // load color image from file system to Mat variable, this will be loaded using 8 bits (uchar)
     //cv::imshow( "LENA", img );
 
     // declare variable to hold grayscale version of img variable, gray levels wil be represented using 8 bits (uchar)
@@ -216,7 +216,7 @@ int main( int argc, char *argv[] )
     // declare variable to hold grayscale version of img variable, gray levels wil be represented using 32 bits (float)
     cv::Mat gray_32fc1_img;
 
-    cv::cvtColor( src_8uc3_img, gray_8uc1_img, CV_BGR2GRAY ); // convert input color image to grayscale one, CV_BGR2GRAY specifies direction of conversion
+    cv::cvtColor( src_8uc3_img, gray_8uc1_img, cv::COLOR_BGR2GRAY ); // convert input color image to grayscale one, CV_BGR2GRAY specifies direction of conversion
     gray_8uc1_img.convertTo( gray_32fc1_img, CV_32FC1, 1.0 / 255.0 ); // convert grayscale image from 8 bits to 32 bits, resulting values will be in the interval 0.0 - 1.0
 
     int x = 10, y = 15; // pixel coordinates
@@ -234,7 +234,7 @@ int main( int argc, char *argv[] )
 
     // draw a rectangle
     cv::rectangle( gray_8uc1_img, cv::Point( 65, 84 ), cv::Point( 75, 94 ),
-                   cv::Scalar( 50 ), CV_FILLED );
+                   cv::Scalar( 50 ), cv::FILLED );
 
     // declare variable to hold gradient image with dimensions: width= 256 pixels, height= 50 pixels.
     // Gray levels wil be represented using 8 bits (uchar)

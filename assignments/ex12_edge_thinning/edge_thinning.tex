@@ -19,13 +19,21 @@ Today's exercise is focused on implementation of edge thinning and subsequent do
 \subsection*{Non-maxima Supression}
 
 So far, we have used the Sobel operator or other convolution operators to obtain edges in images.
-For this exercise, we need edges found using central difference.
+For this exercise, we need edges found using central difference, see Eqs. (\ref{eq:central-x}) and (\ref{eq:central-y}).
 These edges are rather thick.
 Our goal is to get edges of image represend using a single pixel edges.
 This is called edge thinning and we will use non-maxima supression to achieve this goal.
 What non-maxima supression does is that it supresses (sets to $0$) all values that are not maximum in ther context.
 By context, we mean the close neighbour of a pixel.
 In a 1D situation, we leave unchanged only pixels that satisfy the following equation
+
+\begin{equation} \label{eq:central-x}
+    f_x(x, y) = \frac{f(x - 1, y) - f(x + 1, y)}{2}
+\end{equation}
+
+\begin{equation} \label{eq:central-y}
+    f_y(x, y) = \frac{f(x, y - 1) - f(x, y + 1)}{2}
+\end{equation}
 
 \begin{equation} \label{eq:max_1d}
     E(x - 1) < E(x) > E(x + 1)

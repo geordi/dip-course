@@ -11,7 +11,7 @@ These boundaries contains edges - a location in the image where the color (brigh
 Therefore, the location of edge can be determined using the derivative of the function (see Figure !ref(fig:edges)).
 In this exercise, you will implement two basic edge detection methods.
 
-![The brightness function and its first and second derivative.\label{fig:edges}](./images/edges.png){ width=40% }
+![The brightness function and its first and second derivative.\label{fig:edges}](./images/edges.png){ width=35% }
 
 ## First Derivative
 
@@ -29,7 +29,7 @@ e(x,y) = \sqrt{f^2_x(x,y) + f^2_y(x,y)}.
 \end{equation}
 This value is computed for all image pixels.
 If $e(x,y)$ is higher than a chosen threshold, it is considered as a real edge.
-The result of this method (in the normalized form) can be seen in Figure !ref(fig:result)(*center*).
+The result of this method (in the normalized form) can be seen in Figure !ref(fig:result)(*top right*).
 
 
 ## Second Derivative
@@ -51,6 +51,26 @@ Using the Laplacian operator, the equation is in the form
 \begin{equation}
 \triangledown^2 f(x,y) = f(x-1, y)+f(x+1,y)+f(x, y-1)+f(x,y+1)-4f(x,y).
 \end{equation}
-The result of this method (in the normalized form) can be seen in Figure !ref(fig:result)(*right*).
+The result of this method (in the normalized form) can be seen in Figure !ref(fig:result)(*bottom left*).
 
-![The input image (left), the edges detected by the first derivative (center), and the second derivative(right).\label{fig:result}](./images/images.png){ width=100% }
+
+## Sobel Operator
+This operator is also based on the differences between the pixel values in the $x$ and $y$ directions.
+For computing the size of edge at $(x,y)$, the Sobel operator uses values of all the neighboring pixels.
+Let us use the labels of the neighboring pixels as it is shown in Figure !ref(fig:labeling). 
+
+![The labeling of image pixels.\label{fig:labeling}](./images/table.png){ width=25% }
+
+![The Sobel masks for the $x$ and $y$ directions.\label{fig:sobel_masks}](./images/sobmasks.png){ width=45% }
+
+The value of $f(x,y)$ is computed as
+\begin{eqnarray}
+f_x(x,y)=(C-A) + 2(F-D) + (I-G)\\
+f_y(x,y)=(A-G) + 2(B-H) + (C-I)
+\end{eqnarray}
+
+These formulas can be represented as $3\times 3$ convolution masks as it is shown in Figure !ref(fig:sobel_masks).
+Therefore, you can compute the output image using image convolution.
+The result of the Sobel operator can be seen in Figure !ref(fig:result)(*bottom right*).
+
+![The input image (top left), the edges detected by the first derivative (top right), the second derivative(bottom left), and by the Sobel operator (bottom right).\label{fig:result}](./images/results.png){ width=100% }

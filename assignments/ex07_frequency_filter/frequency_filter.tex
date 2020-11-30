@@ -21,12 +21,12 @@ Another task is removing regular vertical bars in the image.
 
 \subsection*{Noise Removal}
 
-As mentioned above, noise is reflected in high frequencies in the frequency domain.
+As mentioned above, noise is represented by high frequencies of the frequency domain.
 From the previous exercise, we have already created an image transform to a frequency domain (DFT) and a reverse conversion to a spatial domain (IDFT).
 We now introduce filters into this pipeline.
 In the frequency domain, we can apply the following types of filters: low pass, high pass and band pass.
 Use low pass filter to remove noise.
-Recall that there are low frequencies after DFT runs in the corners of the complex matrix and the high frequencies in the center.
+Recall that after DFT low frequencies are in corners of the complex matrix and the high frequencies in the center.
 In order to our filter to work well, we need to swap 1st with the 3rd quadrant and 2nd with the 4th quadrant (schematically depicted in Fig. \ref{fig:quadrants}).
 
 \begin{figure}[h]
@@ -46,9 +46,9 @@ Then, you create a mask that has the white color in the circle and the black out
 \end{figure}
 
 The diameter of the circle will depend on filtration rate (try to elabotate on this).
-To remove high frequencies, go through the mask's pixels and set the complex matrix to the value of 0 outside the white circle.
+To remove high frequencies (low pass filter), go through the mask's pixels and set the complex matrix to the value of 0 outside the white circle.
 Do the reverse for the high pass filter.
-After setting the values, you must swap the quadrants to the original positions.
+After setting the values, you must swap the quadrants back to the original positions.
 Result of the low pass filter is shown in Fig. \ref{fig:low_high}.
 
 \begin{figure}[h]
